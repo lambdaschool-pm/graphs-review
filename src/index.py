@@ -1,4 +1,4 @@
-from graph import Graph, Vertex
+from graph import Graph
 from draw import BokehGraph
 
 

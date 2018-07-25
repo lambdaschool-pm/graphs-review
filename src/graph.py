@@ -131,7 +131,28 @@ class Graph:
                     queue.append(edge)
                     edge.color = random_color
 
-            queue.pop(0)  # TODo look at collections.dequeue
+            queue.pop(0)  # TODo look at collections.stack
+        return found
+
+    def dfs(self, start):
+        random_color = '#' + \
+            ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+        stack = []
+        found = []
+        stack.append(start)
+        found.append(start)
+
+        start.color = random_color
+
+        while (len(stack) > 0):
+            v = stack[len(stack) - 1]
+            for edge in v.edges:
+                if edge not in found:
+                    found.append(edge)
+                    stack.append(edge)
+                    edge.color = random_color
+
+            stack.pop()  # TODo look at collections.stack
         return found
 
     # Get the connected components
@@ -144,6 +165,6 @@ class Graph:
 
         for index, vertex in self.vertices.items():
             if vertex not in searched:
-                searched.append(self.bfs(vertex))
+                searched.append(self.bfs(vertex))  # using bfs
 
         return searched

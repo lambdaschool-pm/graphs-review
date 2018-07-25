@@ -33,7 +33,7 @@ class BokehGraph:
         graph_renderer = GraphRenderer()
 
         graph_renderer.node_renderer.data_source.add(
-            list(self.graph.vertices.keys()), 'index')
+            list(sorted(self.graph.vertices.keys())), 'index')
         graph_renderer.node_renderer.data_source.add(
             self._get_random_colors(), 'color')
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
