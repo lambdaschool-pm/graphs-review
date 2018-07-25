@@ -46,9 +46,10 @@ class BokehGraph:
 
     def _get_random_colors(self):
         colors = []
-        for _ in range(len(self.graph.vertices)):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
-            colors.append(color)
+        for i in range(len(self.graph.vertices)):
+            # color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            # colors.append(color)
+            colors.append(self.graph.vertices[str(i)].color)
         return colors
 
     def _get_edge_indexes(self):
@@ -82,9 +83,7 @@ class BokehGraph:
             label_data["x"].append(edges[0])
             label_data["y"].append(edges[1])
             label_data["name"].append(vertex)
-        print("label", label_data)
         label_source = ColumnDataSource(label_data)
-        print("label source:", label_source)
 
         labels = LabelSet(
             x="x",
