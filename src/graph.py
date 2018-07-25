@@ -1,29 +1,78 @@
-import random
-
-
-class Edge:
-    def __init__(self, destination):
-        self.destination = destination
-
-
 class Vertex:
-    def __init__(self, value, **pos):  # TODO: test default arguments
-        self.value = value
-        self.color = 'white'
+    def __init__(self, label, color="gray", **pos):
+        self.label = label
         self.pos = pos
-        self.edges = []
+        self.color = color
+        self.edges = set()
+
+    '''
+    def __repr__(self):
+        return str(self.label)
+    '''
+
+    # Use the str method instead
+    def __str__(self):
+        if not self.pos:
+            pos = dict(x=None, y=None)
+        else:
+            pos = self.pos
+        return "Vartex is {}, position at ({}, {}), color is {} and has edges  {}".format(self.label, pos['x'], pos['y'], self.color, self.edges)
 
 
 class Graph:
     def __init__(self):
-        self.vertexes = []
+        self.vertices = {}
 
-    # Helper function to set up two-way edges
-    def connectVerts(self, v0, v1):
-        v0.edges.append(Edge(v1))
-        v1.edges.append(Edge(v0))
+    # we can see what properties are on the Graph
+    def __str__(self):
+        return str(self.vertices)
+
+    def add_edge(self, start, end, bidirectional=True):
+        """ And an edge (default bidirectional) between two vertices"""
+
+        # Change this so that if not in vertices, just add it
+        '''
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception("Vertices to connect not in graph!")
+        self.vertices[start].add(end)
+        '''
+        # using the key, if we are passed an object just get the key
+
+        if isinstance(start, Vertex):
+            start = start.label
+
+        if isinstance(end, Vertex):
+            end = end.label
+
+        # add start if not in vertices
+        if start not in list(self.vertices.keys()):
+            self.add_vertex(Vertex(start))
+
+        # add end if not in vertices
+        if end not in list(self.vertices.keys()):
+            self.add_vertex(Vertex(end))
+
+        self.vertices[start].edges.add(self.vertices[end])
+        if bidirectional:
+            self.vertices[end].edges.add(self.vertices[start])
+
+    def add_vertex(self, vertex):
+
+        if not isinstance(vertex, Vertex):
+            vertex = Vertex(vertex)
+
+        if vertex.label in self.vertices:
+            raise Exception("Error: adding vertex that alredy exists")
+        # rip these lines out, deal with them when adding edges
+        '''
+        if not set(edges).issubset(self.vertices):
+            raise Exception("Error: cannot have edge to nonexistent vertices")
+        self.vertices[vertex] = set(edges)
+        '''
+        self.vertices[vertex.label] = vertex
 
     # Create a random graph
+    """
     def randomize(self, width, height, pxBox, probability=0.6):
         count = 0
         # Build a grid of verts
@@ -132,3 +181,4 @@ class Graph:
                 searched.append(self.bfs(vertex))
 
         return searched
+    """
